@@ -19,9 +19,11 @@ import Zip
 The easiest way to use Zip is through quick functions. Both take local file paths as NSURLs, throw if an error is encountered and return an NSURL to the destination if successful.
 ```swift
 do {
-    let filePath = Bundle.main.url(forResource: "file", withExtension: "zip")!
-    let unzipDirectory = try Zip.quickUnzipFile(filePath) // Unzip
-    let zipFilePath = try Zip.quickZipFiles([filePath], fileName: "archive") // Zip
+ 
+    let documentsDirectory = FileManager.default.urls(for:.documentDirectory, in: .userDomainMask)[0]
+    let zipFilePath = documentsDirectory.appendingPathComponent("\("name Folder Saved")/\("name File Zip")")
+    let unzipped = try Zip.quickUnzipFile(zipFilePath, "name Folder Saved") // Unzip
+                    
 }
 catch {
   print("Something went wrong")
@@ -33,16 +35,16 @@ catch {
 For more advanced usage, Zip has functions that let you set custom  destination paths, work with password protected zips and use a progress handling closure. These functions throw if there is an error but don't return.
 ```swift
 do {
-    let filePath = Bundle.main.url(forResource: "file", withExtension: "zip")!
-    let documentsDirectory = FileManager.default.urls(for:.documentDirectory, in: .userDomainMask)[0]
-    try Zip.unzipFile(filePath, destination: documentsDirectory, overwrite: true, password: "password", progress: { (progress) -> () in
-        print(progress)
-    }) // Unzip
-
-    let zipFilePath = documentsFolder.appendingPathComponent("archive.zip")
-    try Zip.zipFiles([filePath], zipFilePath: zipFilePath, password: "password", progress: { (progress) -> () in
-        print(progress)
-    }) //Zip
+    
+    let documentsURL = try FileManager.default.url(for: .documentDirectory,in: .userDomainMask,appropriateFor: nil,create: false)
+    let zipFilePath = documentsDirectory.appendingPathComponent("\("name Folder Saved")/\("name File Zip")")
+    try Zip.unzipFile(zipFilePath, destination: documentsURL, overwrite: true, password: "", progress: { (progress) -> () in
+                        print(progress)
+                        if progress == 1 {
+                            //self.closed = true
+                            print(Finished)
+                        }
+                    })
 
 }
 catch {
@@ -60,7 +62,7 @@ Zip.addCustomFileExtension("file-extension-here")
 ### [Preferred] Setting up with [Swift Package Manager](https://swift.org/package-manager)
 To use Zip with Swift Package Manager, add it to your package's dependencies:
 ```swift
-.package(url: "https://github.com/marmelroy/Zip.git", .upToNextMinor(from: "2.1.0"))
+.package(url: "https://github.com/sar3da/Zip.git", .upToNextMinor(from: "2.1.0"))
 ```
 
 ### Setting up with [CocoaPods](http://cocoapods.org/?q=Zip)
@@ -73,6 +75,6 @@ pod 'Zip', '~> 2.1.0'
 To integrate Zip into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "marmelroy/Zip" ~> 2.1.0
+github "sar3da/Zip" ~> 2.1.0
 ```
 
