@@ -35,21 +35,21 @@ catch {
 For more advanced usage, Zip has functions that let you set custom  destination paths, work with password protected zips and use a progress handling closure. These functions throw if there is an error but don't return.
 ```swift
 do {
-    
-    let documentsURL = try FileManager.default.url(for: .documentDirectory,in: .userDomainMask,appropriateFor: nil,create: false)
-    let zipFilePath = documentsDirectory.appendingPathComponent("\("name Folder Saved")/\("name File Zip")")
-    try Zip.unzipFile(zipFilePath, destination: documentsURL, overwrite: true, password: "", progress: { (progress) -> () in
+                    
+                    let documentsURL = try FileManager.default.url(for: .documentDirectory,in: .userDomainMask,appropriateFor: nil,create: false)
+                    let zipFilePath = documentsDirectory.appendingPathComponent("\("name Folder Saved")/\("name File Zip")")
+                    try Zip.unzipFile(zipFilePath, destination: documentsURL, overwrite: true, password: "", progress: { (progress) -> () in
                         print(progress)
                         if progress == 1 {
                             //self.closed = true
                             print(Finished)
                         }
                     })
-
-}
-catch {
-  print("Something went wrong")
-}
+                    
+                }
+                catch {
+                    print("Something went wrong")
+                }
 ```
 
 ## Custom File Extensions
